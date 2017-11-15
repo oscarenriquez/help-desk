@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:body>
+	<ui:composition>
+		<nav class="navbar navbar-dark bg-primary navbar-expand-lg sticky-top">
+			<span class="navbar-brand mb-0 h1"> Help Desk <p:graphicImage
+					name="images/LogoUMG.png" />
+			</span>
+			<ul class="navbar-nav" style="position: absolute; right: 0;">
+				<li class="nav-item"><p:commandButton
+						icon="fa fa-fw fa-power-off fa-md"
+						action="#{userLoginView.logout}" value="Salir" /></li>
+			</ul>
+		</nav>
+	</ui:composition>
+</h:body>
+</html>

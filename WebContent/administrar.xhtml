@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:body>
+	<ui:composition template="/home.xhtml">
+		<ui:define name="content">
+
+			<h3>Administracion</h3>
+			<p:tabView orientation="right">
+				<p:tab title="Departamentos">
+					
+					<p:dataTable var="depto" value="#{adminView.departamentos}" reflow="true" rows="10" paginator="true">
+					
+					</p:dataTable>
+				</p:tab>
+				<p:tab title="Roles">
+					<h:panelGrid columns="2" cellpadding="10">
+						<p:graphicImage name="demo/images/godfather/godfather2.jpg" />
+						<h:outputText value="Francis Ford Coppola's legendary..." />
+					</h:panelGrid>
+				</p:tab>
+				<p:tab title="Calificaciones">
+					<h:panelGrid columns="2" cellpadding="10">
+						<p:graphicImage name="demo/images/godfather/godfather3.jpg" />
+						<h:outputText value="After a break of more than 15 years..." />
+					</h:panelGrid>
+				</p:tab>
+				<p:tab title="Prioridades">
+					<h:panelGrid columns="2" cellpadding="10">
+						<p:graphicImage name="demo/images/godfather/godfather1.jpg" />
+						<h:outputText value="The story begins as Don Vito Corleone..." />
+					</h:panelGrid>
+				</p:tab>
+				<p:tab title="Estados Tickets">
+					<h:panelGrid columns="2" cellpadding="10">
+						<p:graphicImage name="demo/images/godfather/godfather2.jpg" />
+						<h:outputText value="Francis Ford Coppola's legendary..." />
+					</h:panelGrid>
+				</p:tab>
+				<p:tab title="Tipo Solicitudes">
+					<h:panelGrid columns="2" cellpadding="10">
+						<p:graphicImage name="demo/images/godfather/godfather3.jpg" />
+						<h:outputText value="After a break of more than 15 years..." />
+					</h:panelGrid>
+				</p:tab>				
+			</p:tabView>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

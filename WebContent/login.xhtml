@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+<f:loadBundle basename="resources.application" var="msg" />
+<h:head>
+	<title><h:outputText value="#{msg.welcomeTitle}" /></title>
+	<link rel="stylesheet" href="resources/css/bootstrap.min.css" />
+</h:head>
+<h:body>
+	<h:form>
+
+		<div class="jumbotron text-center">
+			<p:panelGrid columns="2" style="margin: 0 auto">
+				<h:outputText value="#{msg.welcomeHeading}" />
+				<p:graphicImage name="images/LogoUMG.png" />
+			</p:panelGrid>
+			
+		</div>
+		<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+
+		<div class="ui-fluid">
+			<p:panel header="Login" styleClass="ui-shadow" style="max-width:500px; margin: 0 auto;" widgetVar="login-panel">
+				<h:panelGrid columns="2" cellpadding="5" style="width: 100%;">
+					<h:outputLabel for="username" value="Usuario:" />
+					<p:inputText id="username" value="#{userLoginView.username}"
+						required="true" label="username" />
+
+					<h:outputLabel for="password" value="Contraseña:" />
+					<p:password id="password" value="#{userLoginView.password}"
+						required="true" label="password" />
+
+					<f:facet name="footer">
+						<p:commandButton value="Entrar" update="growl"
+							actionListener="#{userLoginView.login}"
+							oncomplete="handleLoginRequest(xhr, status, args)"							
+							icon="ui-icon ui-icon-key" />
+					</f:facet>
+				</h:panelGrid>
+			</p:panel>
+		</div>
+
+
+	</h:form>
+
+	<script type="text/javascript">
+		function handleLoginRequest(xhr, status, args) {
+			if (args.validationFailed || !args.loggedIn) {
+				PF('login-panel').jq.effect("shake", {
+					times : 5
+				}, 100);
+			} else {				
+				$('#loginLink').fadeOut();
+				setTimeout(() => {
+					window.location = "home.jsf";
+				}, 1000)
+				
+			}
+		}		
+	</script>
+</h:body>
+</html>

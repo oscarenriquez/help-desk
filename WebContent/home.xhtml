@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<title><h:outputText value="#{msg.welcomeTitle}" /></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="resources/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="resources/css/sidebar.css" />
+</h:head>
+<h:body>
+	<h:form>
+		<div id="page">
+			<div id="header-container">
+				<div id="header">
+					<ui:insert name="header">
+						<ui:include src="/header.xhtml" />
+					</ui:insert>
+				</div>
+			</div>
+			<div id="content-container">
+				<div id="content">
+					<ui:insert name="content">
+						<ui:include src="historico.xhtml"></ui:include>
+					</ui:insert>
+				</div>
+
+				<a href="javascript:void(0)" class="openbtn" onclick="openNav()">
+				<i class="fa fa-fw fa-bars"></i></a>
+				<ui:insert name="sidebar">
+					<ui:include src="/sidenav.xhtml" />
+				</ui:insert>
+			</div>
+		</div>
+
+	</h:form>
+	<script type="text/javascript">
+		function openNav() {
+			document.getElementById("mySidenav").style.width = "250px";
+			document.getElementById("content").style.marginLeft = "250px";
+		}
+
+		/* Set the width of the side navigation to 0 */
+		function closeNav() {
+			document.getElementById("mySidenav").style.width = "0";
+			document.getElementById("content").style.marginLeft = "0";
+		}
+	</script>
+</h:body>
+</html>

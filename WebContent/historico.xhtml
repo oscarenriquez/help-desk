@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:body>
+	<ui:composition>
+		
+			<h3>Historico</h3>
+			<p:dataTable var="ticket" value="#{ticketView.tickets}" reflow="true" rows="10" paginator="true">
+				<p:column headerText="Id">
+					<h:outputText value="#{ticket.id}" />
+				</p:column>
+
+				<p:column headerText="Anio">
+					<h:outputText value="#{ticket.anio}" />
+				</p:column>
+
+				<p:column headerText="Asunto">
+					<h:outputText value="#{ticket.asunto}" />
+				</p:column>
+
+				<p:column headerText="Fecha Creacion">
+					<h:outputText value="#{ticket.fechaCreacion}" />
+				</p:column>
+			</p:dataTable>		
+
+	</ui:composition>
+</h:body>
+</html>
