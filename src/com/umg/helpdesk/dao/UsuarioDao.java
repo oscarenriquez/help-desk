@@ -1,5 +1,6 @@
 package com.umg.helpdesk.dao;
 
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -10,9 +11,10 @@ import javax.faces.bean.ManagedBean;
 
 import com.umg.helpdesk.model.Usuario;
 
+@SuppressWarnings("serial")
 @ManagedBean(name="usuarioDao")
 @ApplicationScoped
-public class UsuarioDao {
+public class UsuarioDao implements Serializable {
 	
 	public Usuario autenticarUsuario (String username, String password) throws Exception {
 		Usuario usuario = null;

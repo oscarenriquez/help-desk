@@ -10,6 +10,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link rel="stylesheet" href="resources/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="resources/css/sidebar.css" />
+	<link rel="stylesheet" href="resources/css/app.css" />
 </h:head>
 <h:body>
 	<h:form>
@@ -27,7 +28,7 @@
 						<ui:include src="historico.xhtml"></ui:include>
 					</ui:insert>
 				</div>
-
+				<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
 				<a href="javascript:void(0)" class="openbtn" onclick="openNav()">
 				<i class="fa fa-fw fa-bars"></i></a>
 				<ui:insert name="sidebar">

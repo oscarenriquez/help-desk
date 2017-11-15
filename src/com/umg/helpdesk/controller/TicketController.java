@@ -1,5 +1,6 @@
 package com.umg.helpdesk.controller;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -10,9 +11,10 @@ import javax.faces.bean.ViewScoped;
 import com.umg.helpdesk.dao.TicketDao;
 import com.umg.helpdesk.model.Ticket;
 
+@SuppressWarnings("serial")
 @ManagedBean(name="ticketView")
 @ViewScoped
-public class TicketController {
+public class TicketController implements Serializable {
 	
 	private List<Ticket> tickets;
 	

@@ -5,50 +5,120 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://java.sun.com/jsf/core">
 <h:body>
-	<ui:composition template="/home.xhtml">
-		<ui:define name="content">
-
+	<ui:composition template="/home.xhtml">		
+		<ui:define name="content">			
+			
 			<h3>Administracion</h3>
-			<p:tabView orientation="right">
-				<p:tab title="Departamentos">
+			<p:tabView orientation="right">				
+				<p:tab title="Departamentos">						
+					<script type="text/javascript">
+						function handleRequest(xhr, status, args, element) {
+					        if(args.validationFailed || !args.isSuccess) {
+					            PF(element).jq.effect("shake", {times:5}, 100);
+					        }
+					        else {
+					            setTimeout(()=> { PF(element).hide(); }, 500);	            
+					        }
+					    }
+					</script>
+					<p:growl id="growl" sticky="true" showDetail="true" life="3000" style="z-index:9999999999;" />
+					<h:panelGrid columns="1" cellpadding="5">   
+    					<p:commandButton value="Nuevo" icon="fa fa-fw fa-plus-circle" 	    					
+	    					update="dialogDepto" oncomplete="PF('dlgNuevoDepto').show();" /> 
+					</h:panelGrid>
+										
 					
-					<p:dataTable var="depto" value="#{adminView.departamentos}" reflow="true" rows="10" paginator="true">
 					
+					<p:dataTable id="dtDepto" var="depto" value="#{adminView.departamentos}" reflow="true" rows="5" paginator="true" editable="true">
+						<p:column headerText="Id">
+							<h:outputText value="#{depto.id}" />
+						</p:column>				
+						<p:ajax event="rowEdit" listener="#{adminView.onRowEdit}" />
+       					<p:ajax event="rowEditCancel" listener="#{adminView.onRowCancel}" />       					
+						<p:column headerText="Descripcion">
+							<p:cellEditor>
+				               <f:facet name="output"><h:outputText value="#{depto.departamento}" /></f:facet>
+				               <f:facet name="input"><p:inputText id="modelInput" value="#{depto.departamento}" style="width:100%"/></f:facet>
+				           </p:cellEditor>						
+						</p:column>
+						
+						<p:column style="width:32px">
+				           <p:rowEditor />
+				       </p:column>
+				       
 					</p:dataTable>
+					
+					
+					<p:dialog header="Nuevo Departamento" id="dialogDepto" widgetVar="dlgNuevoDepto" modal="true" height="100" resizable="false" responsive="true" dynamic="true" onHide="PF('dlgNuevoDepto').content.empty()">						    					
+    					<h:panelGrid columns="2" cellpadding="5">
+				            <h:outputLabel for="deptoDescripcion" value="Descripcion:" />
+				            <p:inputText id="deptoDescripcion" value="#{adminView.departamento.departamento}" required="true" label="Descripcion" />				 				            
+				 
+				            <f:facet name="footer">
+				                <p:commandButton value="Guardar" update="growl dtDepto" actionListener="#{adminView.guardarDepartamento}"
+				                                 oncomplete="handleRequest(xhr, status, args, 'dlgNuevoDepto')" />
+				            </f:facet>  
+				        </h:panelGrid>
+					</p:dialog> 					
 				</p:tab>
 				<p:tab title="Roles">
-					<h:panelGrid columns="2" cellpadding="10">
-						<p:graphicImage name="demo/images/godfather/godfather2.jpg" />
-						<h:outputText value="Francis Ford Coppola's legendary..." />
-					</h:panelGrid>
+					<p:dataTable  var="role" value="#{adminView.roles}" reflow="true" rows="10" paginator="true">
+						<p:column headerText="Id">
+							<h:outputText value="#{role.id}" />
+						</p:column>
+
+						<p:column headerText="Descripcion">
+							<h:outputText value="#{role.descripcion}" />
+						</p:column>
+					</p:dataTable>
 				</p:tab>
-				<p:tab title="Calificaciones">
-					<h:panelGrid columns="2" cellpadding="10">
-						<p:graphicImage name="demo/images/godfather/godfather3.jpg" />
-						<h:outputText value="After a break of more than 15 years..." />
-					</h:panelGrid>
+				<p:tab title="Clasificaciones">
+					<p:dataTable var="clasificacion" value="#{adminView.clasificaciones}" reflow="true" rows="10" paginator="true">
+						<p:column headerText="Id">
+							<h:outputText value="#{clasificacion.id}" />
+						</p:column>
+
+						<p:column headerText="Descripcion">
+							<h:outputText value="#{clasificacion.descripcion}" />
+						</p:column>
+					</p:dataTable>
 				</p:tab>
 				<p:tab title="Prioridades">
-					<h:panelGrid columns="2" cellpadding="10">
-						<p:graphicImage name="demo/images/godfather/godfather1.jpg" />
-						<h:outputText value="The story begins as Don Vito Corleone..." />
-					</h:panelGrid>
-				</p:tab>
-				<p:tab title="Estados Tickets">
-					<h:panelGrid columns="2" cellpadding="10">
-						<p:graphicImage name="demo/images/godfather/godfather2.jpg" />
-						<h:outputText value="Francis Ford Coppola's legendary..." />
-					</h:panelGrid>
+					<p:dataTable var="prior" value="#{adminView.prioridades}" reflow="true" rows="10" paginator="true">
+						<p:column headerText="Id">
+							<h:outputText value="#{prior.id}" />
+						</p:column>
+
+						<p:column headerText="Descripcion">
+							<h:outputText value="#{prior.descripcion}" />
+						</p:column>
+					</p:dataTable>
 				</p:tab>
 				<p:tab title="Tipo Solicitudes">
-					<h:panelGrid columns="2" cellpadding="10">
-						<p:graphicImage name="demo/images/godfather/godfather3.jpg" />
-						<h:outputText value="After a break of more than 15 years..." />
-					</h:panelGrid>
-				</p:tab>				
+					<p:dataTable var="tipo" value="#{adminView.tipoSolicitudes}" reflow="true" rows="10" paginator="true">
+						<p:column headerText="Id">
+							<h:outputText value="#{tipo.id}" />
+						</p:column>
+
+						<p:column headerText="Descripcion">
+							<h:outputText value="#{tipo.descripcion}" />
+						</p:column>
+					</p:dataTable>
+				</p:tab>
+				<p:tab title="Estado tickets">
+					<p:dataTable var="estado" value="#{adminView.ticketEstados}" reflow="true" rows="10" paginator="true">
+						<p:column headerText="Id">
+							<h:outputText value="#{estado.id}" />
+						</p:column>
+
+						<p:column headerText="Descripcion">
+							<h:outputText value="#{estado.descripcion}" />
+						</p:column>
+					</p:dataTable>
+				</p:tab>
 			</p:tabView>
 
-		</ui:define>
-	</ui:composition>
+		</ui:define>		
+	</ui:composition>	
 </h:body>
 </html>
