@@ -1,6 +1,7 @@
 package com.umg.helpdesk.dao;
 
 import java.sql.*;
+import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
@@ -55,8 +56,8 @@ public class Transaction {
 				ex2.printStackTrace();
 				System.out.print(sql);
 				throw new RuntimeException(ex2);
-
 			}
+			throw new RuntimeException(ex);
 		} catch (Exception exc) {
 			exc.printStackTrace();
 			System.out.print(sql);
@@ -90,10 +91,14 @@ public class Transaction {
 						statement.setString(key, value.toString());
 					} else if (value instanceof Integer) {
 						statement.setInt(key, (Integer) value);
+					} else if (value instanceof Short) {
+						statement.setShort(key, (Short) value);
 					} else if (value instanceof Long) {
 						statement.setLong(key, (Long) value);
 					} else if (value instanceof Double) {
 						statement.setDouble(key, (Double) value);
+					} else if (value instanceof Date) {
+						statement.setDate(key, new java.sql.Date(((Date) value).getTime()));
 					} else {
 						new RuntimeException("Unsupported data type on Transaction.ExecuteInsertOrUpdate");
 					}

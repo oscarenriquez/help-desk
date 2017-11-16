@@ -31,6 +31,10 @@ public class AdministracionController implements Serializable {
 
 	private Departamento departamento;
 	private Clasificacion clasificacion;
+	private Role role;
+	private Prioridad prioridad;
+	private TicketEstado ticketEstado;
+	private TipoSolicitud tipoSolicitud;
 
 	private List<Departamento> departamentos;
 	private List<Clasificacion> clasificaciones;
@@ -43,10 +47,20 @@ public class AdministracionController implements Serializable {
 	public void init() {
 		try {
 			setDepartamentos(dao.obtenerListaDepartamentos());
-		} catch (Exception e) {			
+			setClasificaciones(dao.obtenerListaClasificaciones());
+			setRoles(dao.obtenerListaRoles());
+			setPrioridades(dao.obtenerListaPrioridades());
+			setTipoSolicitudes(dao.obtenerListaTipoSolicitudes());
+			setTicketEstados(dao.obtenerListaTicketEstados());
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		setDepartamento(new Departamento());
+		setClasificacion(new Clasificacion());
+		setRole(new Role());
+		setPrioridad(new Prioridad());
+		setTipoSolicitud(new TipoSolicitud());
+		setTicketEstado(new TicketEstado());
 	}
 
 	public List<Departamento> getDepartamentos() {
@@ -95,28 +109,7 @@ public class AdministracionController implements Serializable {
 
 	public void setTicketEstados(List<TicketEstado> ticketEstados) {
 		this.ticketEstados = ticketEstados;
-	}
-
-	public void onRowEdit(RowEditEvent event) {
-		
-		FacesMessage msg = null;
-		Departamento departamento = (Departamento) event.getObject();
-		try {
-			getDao().actualizarDepartamento(departamento);
-			setDepartamentos(getDao().obtenerListaDepartamentos());
-			msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Departamento", departamento.getDepartamento());
-		} catch (Exception e) {	
-			msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Departamento", e.getMessage());
-			e.printStackTrace();
-		}
-	
-		FacesContext.getCurrentInstance().addMessage(null, msg);
-	}
-
-	public void onRowCancel(RowEditEvent event) {
-		FacesMessage msg = new FacesMessage("Edit Cancelled", ((Departamento) event.getObject()).getId().toString());
-		FacesContext.getCurrentInstance().addMessage(null, msg);
-	}
+	}	
 
 	public AdministracionDao getDao() {
 		return dao;
@@ -133,40 +126,7 @@ public class AdministracionController implements Serializable {
 	public void setDepartamento(Departamento departamento) {
 		this.departamento = departamento;
 	}
-
-	public void guardarDepartamento() {
-		RequestContext context = RequestContext.getCurrentInstance();
-		Boolean isSuccess = false;
-		FacesMessage message = null;
-		
-		try {
-			isSuccess = getDao().crearDepartamento(getDepartamento());
-			setDepartamentos(getDao().obtenerListaDepartamentos());
-		} catch (Exception e) {
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Departamento",	e.getMessage());
-			e.printStackTrace();
-		}
-		
-		if(isSuccess)
-			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Departamento",	"Nuevo Departamento Creado!!");
-		else 
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Departamento",	"Error al crear Departamento!!");
-		FacesContext.getCurrentInstance().addMessage(null, message);
-		context.addCallbackParam("isSuccess", isSuccess);
-	}
-
-	public void obtenerDepartamento() {
-
-	}
-
-	public void editarDepartamento() {
-
-	}
-
-	public void eliminarDepartamento() {
-
-	}		
-
+	
 	public Clasificacion getClasificacion() {
 		return clasificacion;
 	}
@@ -174,24 +134,6 @@ public class AdministracionController implements Serializable {
 	public void setClasificacion(Clasificacion clasificacion) {
 		this.clasificacion = clasificacion;
 	}
-
-	public void guardarClasificacion() {
-
-	}
-
-	public void obtenerClasificacion() {
-
-	}
-
-	public void editarClasificacion() {
-
-	}
-
-	public void eliminarClasificacion() {
-
-	}
-	
-	private Prioridad prioridad;
 
 	public Prioridad getPrioridad() {
 		return prioridad;
@@ -201,24 +143,6 @@ public class AdministracionController implements Serializable {
 		this.prioridad = prioridad;
 	}
 
-	public void guardarPrioridad() {
-
-	}
-
-	public void obtenerPrioridad() {
-
-	}
-
-	public void editarPrioridad() {
-
-	}
-
-	public void eliminarPrioridad() {
-
-	}
-	
-	private Role role;
-
 	public Role getRole() {
 		return role;
 	}
@@ -226,24 +150,6 @@ public class AdministracionController implements Serializable {
 	public void setRole(Role role) {
 		this.role = role;
 	}
-
-	public void guardarRole() {
-
-	}
-
-	public void obtenerRole() {
-
-	}
-
-	public void editarRole() {
-
-	}
-
-	public void eliminarRole() {
-
-	}
-	
-	private TicketEstado ticketEstado;
 
 	public TicketEstado getTicketEstado() {
 		return ticketEstado;
@@ -253,46 +159,177 @@ public class AdministracionController implements Serializable {
 		this.ticketEstado = ticketEstado;
 	}
 
-	public void guardarTipoEstado() {
-
-	}
-
-	public void obtenerTipoEstado() {
-
-	}
-
-	public void editarTipoEstado() {
-
-	}
-
-	public void eliminarTipoEstado() {
-
-	}
-	
-	private TipoSolicitud tipoSolicitud;
-
 	public TipoSolicitud getTipoSolicitud() {
 		return tipoSolicitud;
-	}
-
+	}	
+	
 	public void setTipoSolicitud(TipoSolicitud tipoSolicitud) {
 		this.tipoSolicitud = tipoSolicitud;
 	}
 
+	public void onRowEdit(RowEditEvent event) {
+			
+		Object object = event.getObject();			
+		try {
+			if(object instanceof Departamento) {
+				Departamento departamento = (Departamento) event.getObject();
+				getDao().actualizarDepartamento(departamento);
+				setDepartamentos(getDao().obtenerListaDepartamentos());		
+			} else if (object instanceof Clasificacion) {
+				Clasificacion clasificacion = (Clasificacion) object;
+				getDao().actualizarClasificacion(clasificacion);
+				setClasificaciones(getDao().obtenerListaClasificaciones());
+			} else if (object instanceof Prioridad) {
+				Prioridad prioridad = (Prioridad) object;
+				getDao().actualizarPrioridad(prioridad);
+				setPrioridades(getDao().obtenerListaPrioridades());
+			} else if (object instanceof Role) {
+				Role role = (Role) object;
+				getDao().actualizarRole(role);
+				setRoles(getDao().obtenerListaRoles());
+			} else if (object instanceof TicketEstado) {
+				TicketEstado estado = (TicketEstado) object;
+				getDao().actualizarTicketEstado(estado);
+				setTicketEstados(getDao().obtenerListaTicketEstados());
+			} else if (object instanceof TipoSolicitud) {
+				TipoSolicitud tipoSolicitud = (TipoSolicitud) object;
+				getDao().actualizarTipoSolicitud(tipoSolicitud);
+				setTipoSolicitudes(getDao().obtenerListaTipoSolicitudes());
+			}
+		} catch (Exception e) {			
+			e.printStackTrace();
+		}		
+	}
+
+	public void onRowCancel(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Edit Cancelled", ((Departamento) event.getObject()).getId().toString());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+	
+	public void guardarDepartamento() {
+		RequestContext context = RequestContext.getCurrentInstance();
+		Boolean isSuccess = false;
+		FacesMessage message = null;
+
+		try {
+			isSuccess = getDao().crearDepartamento(getDepartamento());
+			setDepartamentos(getDao().obtenerListaDepartamentos());
+		} catch (Exception e) {
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Departamento", e.getMessage());
+			e.printStackTrace();
+		}
+
+		if (isSuccess)
+			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Departamento", "Nuevo Departamento Creado!!");
+		else
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Departamento", "Error al crear Departamento!!");
+		FacesContext.getCurrentInstance().addMessage(null, message);
+		context.addCallbackParam("isSuccess", isSuccess);
+	}
+	
+	public void guardarClasificacion() {
+		RequestContext context = RequestContext.getCurrentInstance();
+		Boolean isSuccess = false;
+		FacesMessage message = null;
+
+		try {
+			isSuccess = getDao().crearClasificacion(getClasificacion());
+			setClasificaciones(getDao().obtenerListaClasificaciones());
+		} catch (Exception e) {
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Clasificacion", e.getMessage());
+			e.printStackTrace();
+		}
+
+		if (isSuccess)
+			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Clasificacion", "Nueva Clasificacion Creada!!");
+		else
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Clasificacion", "Error al crear Clasificacion!!");
+		FacesContext.getCurrentInstance().addMessage(null, message);
+		context.addCallbackParam("isSuccess", isSuccess);
+	}
+
+	public void guardarPrioridad() {
+		RequestContext context = RequestContext.getCurrentInstance();
+		Boolean isSuccess = false;
+		FacesMessage message = null;
+
+		try {
+			isSuccess = getDao().crearPrioridad(getPrioridad());
+			setPrioridades(getDao().obtenerListaPrioridades());
+		} catch (Exception e) {
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Prioridad", e.getMessage());
+			e.printStackTrace();
+		}
+
+		if (isSuccess)
+			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Prioridad", "Nueva Prioridad Creada!!");
+		else
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Prioridad", "Error al crear Prioridad!!");
+		FacesContext.getCurrentInstance().addMessage(null, message);
+		context.addCallbackParam("isSuccess", isSuccess);
+	}
+
+	public void guardarRole() {
+		RequestContext context = RequestContext.getCurrentInstance();
+		Boolean isSuccess = false;
+		FacesMessage message = null;
+
+		try {
+			isSuccess = getDao().crearRole(getRole());
+			setRoles(getDao().obtenerListaRoles());
+		} catch (Exception e) {
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Role", e.getMessage());
+			e.printStackTrace();
+		}
+
+		if (isSuccess)
+			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Role", "Nuevo Role Creado!!");
+		else
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Role", "Error al crear Role!!");
+		FacesContext.getCurrentInstance().addMessage(null, message);
+		context.addCallbackParam("isSuccess", isSuccess);
+	}
+
+	public void guardarTicketEstado() {
+		RequestContext context = RequestContext.getCurrentInstance();
+		Boolean isSuccess = false;
+		FacesMessage message = null;
+
+		try {
+			isSuccess = getDao().crearTicketEstado(getTicketEstado());
+			setTicketEstados(getDao().obtenerListaTicketEstados());
+		} catch (Exception e) {
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "TicketEstado", e.getMessage());
+			e.printStackTrace();
+		}
+
+		if (isSuccess)
+			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "TicketEstado", "Nuevo TipoEstado Creado!!");
+		else
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "TicketEstado", "Error al crear TipoEstado!!");
+		FacesContext.getCurrentInstance().addMessage(null, message);
+		context.addCallbackParam("isSuccess", isSuccess);
+	}
+
 	public void guardarTipoSolicitud() {
+		RequestContext context = RequestContext.getCurrentInstance();
+		Boolean isSuccess = false;
+		FacesMessage message = null;
 
-	}
+		try {
+			isSuccess = getDao().crearTipoSolicitud(getTipoSolicitud());
+			setTipoSolicitudes(getDao().obtenerListaTipoSolicitudes());
+		} catch (Exception e) {
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "TipoSolicitud", e.getMessage());
+			e.printStackTrace();
+		}
 
-	public void obtenerTipoSolicitud() {
-
-	}
-
-	public void editarTipoSolicitud() {
-
-	}
-
-	public void eliminarTipoSolicitud() {
-
+		if (isSuccess)
+			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "TipoSolicitud", "Nuevo TipoSolicitud Creado!!");
+		else
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "TipoSolicitud", "Error al crear TipoSolicitud!!");
+		FacesContext.getCurrentInstance().addMessage(null, message);
+		context.addCallbackParam("isSuccess", isSuccess);
 	}
 
 }

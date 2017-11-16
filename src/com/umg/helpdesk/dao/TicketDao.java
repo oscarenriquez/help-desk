@@ -40,16 +40,16 @@ public class TicketDao implements Serializable {
 			
 			ResultSet rs = trans.ExecuteQuery(sql.toString(), null);
 					
-			if (rs.next()) {
+			while (rs.next()) {
 				Ticket ticket = new Ticket();
 				ticket.setId(rs.getLong("id"));
 				ticket.setAsunto(rs.getString("asunto"));
 				ticket.setInconveniente(rs.getString("inconveniente"));
 				ticket.setAnio(rs.getShort("anio"));
 				ticket.setMes(rs.getShort("mes"));
-				ticket.setFechaCreacion(rs.getTimestamp("fecha_creacion"));
-				ticket.setFechaModificacion(rs.getTimestamp("fecha_modificacion"));
-				ticket.setFechaEstimacion(rs.getTimestamp("fecha_estimacion_resolucion"));
+				ticket.setFechaCreacion(rs.getDate("fecha_creacion"));
+				ticket.setFechaModificacion(rs.getDate("fecha_modificacion"));
+				ticket.setFechaEstimacion(rs.getDate("fecha_estimacion_resolucion"));
 				ticket.setTipoSolicitudId(rs.getLong("tipo_solicitud_id"));
 				ticket.setPrioridadId(rs.getLong("prioridad_id"));
 				ticket.setDeptoSolicitanteId(rs.getLong("depto_solicitante_id"));

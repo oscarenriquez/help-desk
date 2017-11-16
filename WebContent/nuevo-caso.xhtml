@@ -5,9 +5,56 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://java.sun.com/jsf/core">
 <h:body>
-	<ui:composition template="/home.xhtml">
-		<ui:define name="content">
-		<h3>Nuevo Caso</h3>
+	<ui:composition template="home.xhtml">
+		<ui:define name="content">					
+			<p:panel header="Nuevo Caso" styleClass="ui-shadow" widgetVar="panel" style="margin-bottom:20px">	
+				<div class="ui-fluid">
+							
+					<p:panelGrid columns="4" layout="grid" cellpadding="5" style="width: 100%;"  >
+						<p:outputLabel for="asunto" value="Asunto:"/>
+						<p:inputText id="asunto" value="#{nuevoCasoView.ticket.asunto}" label="Asunto" required="true"/>
+											
+						<p:outputLabel for="clasificacion" value="Clasificacion:" />					
+						<p:selectOneMenu id="clasificacion" value="#{nuevoCasoView.ticket.clasificacionId}">
+				            <f:selectItems value="#{nuevoCasoView.clasificaciones}" var="cl" itemValue="#{cl.id}" itemDescription="#{cl.descripcion}" itemLabel="#{cl.descripcion}"></f:selectItems>
+				        </p:selectOneMenu>
+				        
+				        <p:outputLabel for="departamento" value="Departamento:" />					
+						<p:selectOneMenu id="departamento" value="#{nuevoCasoView.ticket.deptoAsignacionId}">
+				            <f:selectItems value="#{nuevoCasoView.departamentos}" var="dpt" itemValue="#{dpt.id}" itemDescription="#{dpt.departamento}" itemLabel="#{dpt.departamento}"></f:selectItems>
+				        </p:selectOneMenu>
+				        
+				        <p:outputLabel for="prioridad" value="Prioridad:" />					
+						<p:selectOneMenu id="prioridad" value="#{nuevoCasoView.ticket.prioridadId}">
+				            <f:selectItems value="#{nuevoCasoView.prioridades}" var="pr" itemValue="#{pr.id}" itemDescription="#{pr.descripcion}" itemLabel="#{pr.descripcion}"></f:selectItems>
+				        </p:selectOneMenu>
+				        
+				        <p:outputLabel for="tipoSolicitud" value="Tipo Solicitud:" />					
+						<p:selectOneMenu id="tipoSolicitud" value="#{nuevoCasoView.ticket.tipoSolicitudId}">
+				            <f:selectItems value="#{nuevoCasoView.solicitudes}" var="sl" itemValue="#{sl.id}" itemDescription="#{sl.descripcion}" itemLabel="#{sl.descripcion}"></f:selectItems>
+				        </p:selectOneMenu>			        			        
+					</p:panelGrid>
+					
+					<p:panelGrid columns="1" cellpadding="5" style="width: 100%;">
+						<p:outputLabel for="inconveniente" value="Inconveniente:" />
+						<!--  <p:inputTextarea id="inconveniente" value="#{nuevoCasoView.ticket.inconveniente}" ></p:inputTextarea>-->
+						<p:editor widgetVar="editorInconveniente"  controls="bold italic underline strikethrough font size" id="inconveniente" value="#{nuevoCasoView.ticket.inconveniente}" height="150" placeholder="Ingresa tu comentario">														        
+				        </p:editor >			    
+					</p:panelGrid>				
+				</div>							
+		        
+		        <f:facet name="actions">		        
+		        	<script>
+		        	function sendBack() {
+		        		window.location ="home.jsf?faces=redirect-true";
+		        	}
+		        	</script>
+		            <p:commandButton type="submit" action="#{nuevoCasoView.nuevoCaso}"  styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default btn-primary" icon="fa fa-lg fa-save" value="Guardar">
+		            	<p:ajax disabled="true"></p:ajax>
+		            </p:commandButton>
+		            <p:commandButton onclick="sendBack();" styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default btn-danger" icon="fa fa-lg fa-close" value="Cerrar"/>		            
+		        </f:facet>
+			</p:panel>				
 		</ui:define>
 	</ui:composition>
 </h:body>

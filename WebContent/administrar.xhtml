@@ -21,15 +21,16 @@
 					        }
 					    }
 					</script>
+					<h4>Departamentos</h4>
 					<p:growl id="growl" sticky="true" showDetail="true" life="3000" style="z-index:9999999999;" />
+					<!-- <p:growl id="growl" sticky="true" showDetail="true" life="3000" style="z-index:9999999999;" /> -->
 					<h:panelGrid columns="1" cellpadding="5">   
     					<p:commandButton value="Nuevo" icon="fa fa-fw fa-plus-circle" 	    					
 	    					update="dialogDepto" oncomplete="PF('dlgNuevoDepto').show();" /> 
 					</h:panelGrid>
-										
-					
-					
-					<p:dataTable id="dtDepto" var="depto" value="#{adminView.departamentos}" reflow="true" rows="5" paginator="true" editable="true">
+																			
+					<p:dataTable id="dtDepto" var="depto" value="#{adminView.departamentos}" reflow="true" rows="10" paginator="true" editable="true">
+						
 						<p:column headerText="Id">
 							<h:outputText value="#{depto.id}" />
 						</p:column>				
@@ -62,59 +63,253 @@
 					</p:dialog> 					
 				</p:tab>
 				<p:tab title="Roles">
-					<p:dataTable  var="role" value="#{adminView.roles}" reflow="true" rows="10" paginator="true">
+					
+					<script type="text/javascript">
+						function handleRequest(xhr, status, args, element) {
+					        if(args.validationFailed || !args.isSuccess) {
+					            PF(element).jq.effect("shake", {times:5}, 100);
+					        }
+					        else {
+					            setTimeout(()=> { PF(element).hide(); }, 500);	            
+					        }
+					    }
+					</script>
+					<h4>Roles</h4>
+					<!-- <p:growl id="growl" sticky="true" showDetail="true" life="3000" style="z-index:9999999999;" /> -->
+					<h:panelGrid columns="1" cellpadding="5">   
+    					<p:commandButton value="Nuevo" icon="fa fa-fw fa-plus-circle" 	    					
+	    					update="dialogRole" oncomplete="PF('dlgNuevoRole').show();" /> 
+					</h:panelGrid>
+					
+					<p:dataTable id="dtRole" var="role" value="#{adminView.roles}" reflow="true" rows="10" paginator="true" editable="true">
 						<p:column headerText="Id">
 							<h:outputText value="#{role.id}" />
 						</p:column>
-
+								
+						<p:ajax event="rowEdit" listener="#{adminView.onRowEdit}" />
+       					<p:ajax event="rowEditCancel" listener="#{adminView.onRowCancel}" />       					
 						<p:column headerText="Descripcion">
-							<h:outputText value="#{role.descripcion}" />
+							<p:cellEditor>
+				               <f:facet name="output"><h:outputText value="#{role.descripcion}" /></f:facet>
+				               <f:facet name="input"><p:inputText id="modelInput" value="#{role.descripcion}" style="width:100%"/></f:facet>
+				           </p:cellEditor>						
 						</p:column>
+						
+						<p:column style="width:32px">
+				           <p:rowEditor />
+				       </p:column>
 					</p:dataTable>
+					
+					<p:dialog header="Nuevo Role" id="dialogRole" widgetVar="dlgNuevoRole" modal="true" height="100" resizable="false" responsive="true" dynamic="true" onHide="PF('dlgNuevoRole').content.empty()">						    					
+    					<h:panelGrid columns="2" cellpadding="5">
+				            <h:outputLabel for="roleDescripcion" value="Descripcion:" />
+				            <p:inputText id="roleDescripcion" value="#{adminView.role.descripcion}" required="true" label="Descripcion" />				 				            
+				 
+				            <f:facet name="footer">
+				                <p:commandButton value="Guardar" update="growl dtRole" actionListener="#{adminView.guardarRole}"
+				                                 oncomplete="handleRequest(xhr, status, args, 'dlgNuevoRole')" />
+				            </f:facet>  
+				        </h:panelGrid>
+					</p:dialog> 
 				</p:tab>
 				<p:tab title="Clasificaciones">
-					<p:dataTable var="clasificacion" value="#{adminView.clasificaciones}" reflow="true" rows="10" paginator="true">
+					<script type="text/javascript">
+						function handleRequest(xhr, status, args, element) {
+					        if(args.validationFailed || !args.isSuccess) {
+					            PF(element).jq.effect("shake", {times:5}, 100);
+					        }
+					        else {
+					            setTimeout(()=> { PF(element).hide(); }, 500);	            
+					        }
+					    }
+					</script>
+					<h4>Clasificaciones</h4>
+					<!-- <p:growl id="growl" sticky="true" showDetail="true" life="3000" style="z-index:9999999999;" /> -->
+					<h:panelGrid columns="1" cellpadding="5">   
+    					<p:commandButton value="Nuevo" icon="fa fa-fw fa-plus-circle" 	    					
+	    					update="dialogClasi" oncomplete="PF('dlgNuevoClasi').show();" /> 
+					</h:panelGrid>				
+				
+					<p:dataTable id="dtClasi" var="clasificacion" value="#{adminView.clasificaciones}" reflow="true" rows="10" paginator="true" editable="true">
 						<p:column headerText="Id">
 							<h:outputText value="#{clasificacion.id}" />
 						</p:column>
 
+						<p:ajax event="rowEdit" listener="#{adminView.onRowEdit}" />
+       					<p:ajax event="rowEditCancel" listener="#{adminView.onRowCancel}" />       					
 						<p:column headerText="Descripcion">
-							<h:outputText value="#{clasificacion.descripcion}" />
+							<p:cellEditor>
+				               <f:facet name="output"><h:outputText value="#{clasificacion.descripcion}" /></f:facet>
+				               <f:facet name="input"><p:inputText id="modelInput" value="#{clasificacion.descripcion}" style="width:100%"/></f:facet>
+				           </p:cellEditor>						
 						</p:column>
-					</p:dataTable>
+						
+						<p:column style="width:32px">
+				           <p:rowEditor />
+				       </p:column>					
+				    </p:dataTable>
+					
+					<p:dialog header="Nueva Clasificacion" id="dialogClasi" widgetVar="dlgNuevoClasi" modal="true" height="100" resizable="false" responsive="true" dynamic="true" onHide="PF('dlgNuevoClasi}').content.empty()">						    					
+    					<h:panelGrid columns="2" cellpadding="5">
+				            <h:outputLabel for="clasiDescripcion" value="Descripcion:" />
+				            <p:inputText id="clasiDescripcion" value="#{adminView.clasificacion.descripcion}" required="true" label="Descripcion" />				 				            
+				 
+				            <f:facet name="footer">
+				                <p:commandButton value="Guardar" update="growl dtClasi" actionListener="#{adminView.guardarClasificacion}"
+				                                 oncomplete="handleRequest(xhr, status, args, 'dlgNuevoClasi')" />
+				            </f:facet>  
+				        </h:panelGrid>
+					</p:dialog> 
 				</p:tab>
 				<p:tab title="Prioridades">
-					<p:dataTable var="prior" value="#{adminView.prioridades}" reflow="true" rows="10" paginator="true">
+					<script type="text/javascript">
+						function handleRequest(xhr, status, args, element) {
+					        if(args.validationFailed || !args.isSuccess) {
+					            PF(element).jq.effect("shake", {times:5}, 100);
+					        }
+					        else {
+					            setTimeout(()=> { PF(element).hide(); }, 500);	            
+					        }
+					    }
+					</script>
+					<h4>Prioridades</h4>
+					<!-- <p:growl id="growl" sticky="true" showDetail="true" life="3000" style="z-index:9999999999;" /> -->
+					<h:panelGrid columns="1" cellpadding="5">   
+    					<p:commandButton value="Nuevo" icon="fa fa-fw fa-plus-circle" 	    					
+	    					update="dialogPrior" oncomplete="PF('dlgNuevoPrior').show();" /> 
+					</h:panelGrid>
+				
+					<p:dataTable id="dtPrior" var="prior" value="#{adminView.prioridades}" reflow="true" rows="10" paginator="true" editable="true">
 						<p:column headerText="Id">
 							<h:outputText value="#{prior.id}" />
 						</p:column>
 
+						<p:ajax event="rowEdit" listener="#{adminView.onRowEdit}" />
+       					<p:ajax event="rowEditCancel" listener="#{adminView.onRowCancel}" />       					
 						<p:column headerText="Descripcion">
-							<h:outputText value="#{prior.descripcion}" />
+							<p:cellEditor>
+				               <f:facet name="output"><h:outputText value="#{prior.descripcion}" /></f:facet>
+				               <f:facet name="input"><p:inputText id="modelInput" value="#{prior.descripcion}" style="width:100%"/></f:facet>
+				           </p:cellEditor>						
 						</p:column>
+						
+						<p:column style="width:32px">
+				           <p:rowEditor />
+				       </p:column>
 					</p:dataTable>
+					
+					<p:dialog header="Nueva Prioridad" id="dialogPrior" widgetVar="dlgNuevoPrior" modal="true" height="100" resizable="false" responsive="true" dynamic="true" onHide="PF('dlgNuevoPrior').content.empty()">						    					
+    					<h:panelGrid columns="2" cellpadding="5">
+				            <h:outputLabel for="priorDescripcion" value="Descripcion:" />
+				            <p:inputText id="priorDescripcion" value="#{adminView.prioridad.descripcion}" required="true" label="Descripcion" />				 				            
+				 
+				            <f:facet name="footer">
+				                <p:commandButton value="Guardar" update="growl dtPrior" actionListener="#{adminView.guardarPrioridad}"
+				                                 oncomplete="handleRequest(xhr, status, args, 'dlgNuevoPrior')" />
+				            </f:facet>  
+				        </h:panelGrid>
+					</p:dialog> 
 				</p:tab>
-				<p:tab title="Tipo Solicitudes">
-					<p:dataTable var="tipo" value="#{adminView.tipoSolicitudes}" reflow="true" rows="10" paginator="true">
+				<p:tab title="Tipos Solicitudes">
+					<script type="text/javascript">
+						function handleRequest(xhr, status, args, element) {
+					        if(args.validationFailed || !args.isSuccess) {
+					            PF(element).jq.effect("shake", {times:5}, 100);
+					        }
+					        else {
+					            setTimeout(()=> { PF(element).hide(); }, 500);	            
+					        }
+					    }
+					</script>
+					<h4>Tipos Solicitudes</h4>
+					<!-- <p:growl id="growl" sticky="true" showDetail="true" life="3000" style="z-index:9999999999;" /> -->
+					<h:panelGrid columns="1" cellpadding="5">   
+    					<p:commandButton value="Nuevo" icon="fa fa-fw fa-plus-circle" 	    					
+	    					update="dialogTipoSoli" oncomplete="PF('dlgNuevoTipoSoli').show();" /> 
+					</h:panelGrid>
+					
+					<p:dataTable id="dtTipoSoli" var="tipo" value="#{adminView.tipoSolicitudes}" reflow="true" rows="10" paginator="true" editable="true">
 						<p:column headerText="Id">
 							<h:outputText value="#{tipo.id}" />
 						</p:column>
 
+						<p:ajax event="rowEdit" listener="#{adminView.onRowEdit}" />
+       					<p:ajax event="rowEditCancel" listener="#{adminView.onRowCancel}" />       					
 						<p:column headerText="Descripcion">
-							<h:outputText value="#{tipo.descripcion}" />
+							<p:cellEditor>
+				               <f:facet name="output"><h:outputText value="#{tipo.descripcion}" /></f:facet>
+				               <f:facet name="input"><p:inputText id="modelInput" value="#{tipo.descripcion}" style="width:100%"/></f:facet>
+				           </p:cellEditor>						
 						</p:column>
+						
+						<p:column style="width:32px">
+				           <p:rowEditor />
+				       </p:column>
 					</p:dataTable>
+					
+					<p:dialog header="Nuevo Tipo Solicitud" id="dialogTipoSoli" widgetVar="dlgNuevoTipoSoli" modal="true" height="100" resizable="false" responsive="true" dynamic="true" onHide="PF('dlgNuevoTipoSoli').content.empty()">						    					
+    					<h:panelGrid columns="2" cellpadding="5">
+				            <h:outputLabel for="tipoSoliDescripcion" value="Descripcion:" />
+				            <p:inputText id="tipoSoliDescripcion" value="#{adminView.tipoSolicitud.descripcion}" required="true" label="Descripcion" />				 				            
+				 
+				            <f:facet name="footer">
+				                <p:commandButton value="Guardar" update="growl dtTipoSoli" actionListener="#{adminView.guardarTipoSolicitud}"
+				                                 oncomplete="handleRequest(xhr, status, args, 'dlgNuevoTipoSoli')" />
+				            </f:facet>  
+				        </h:panelGrid>
+					</p:dialog> 
+					
 				</p:tab>
 				<p:tab title="Estado tickets">
-					<p:dataTable var="estado" value="#{adminView.ticketEstados}" reflow="true" rows="10" paginator="true">
+				
+					<script type="text/javascript">
+						function handleRequest(xhr, status, args, element) {
+					        if(args.validationFailed || !args.isSuccess) {
+					            PF(element).jq.effect("shake", {times:5}, 100);
+					        }
+					        else {
+					            setTimeout(()=> { PF(element).hide(); }, 500);	            
+					        }
+					    }
+					</script>
+					<h4>Estado Tickets</h4>
+					<!-- <p:growl id="growl" sticky="true" showDetail="true" life="3000" style="z-index:9999999999;" /> -->
+					<h:panelGrid columns="1" cellpadding="5">   
+    					<p:commandButton value="Nuevo" icon="fa fa-fw fa-plus-circle" 	    					
+	    					update="dialogEstado" oncomplete="PF('dlgNuevoEstado').show();" /> 
+					</h:panelGrid>
+				
+					<p:dataTable id="dtEstado" var="estado" value="#{adminView.ticketEstados}" reflow="true" rows="10" paginator="true" editable="true">
 						<p:column headerText="Id">
 							<h:outputText value="#{estado.id}" />
 						</p:column>
 
+						<p:ajax event="rowEdit" listener="#{adminView.onRowEdit}" />
+       					<p:ajax event="rowEditCancel" listener="#{adminView.onRowCancel}" />       					
 						<p:column headerText="Descripcion">
-							<h:outputText value="#{estado.descripcion}" />
+							<p:cellEditor>
+				               <f:facet name="output"><h:outputText value="#{estado.descripcion}" /></f:facet>
+				               <f:facet name="input"><p:inputText id="modelInput" value="#{estado.descripcion}" style="width:100%"/></f:facet>
+				           </p:cellEditor>						
 						</p:column>
+						
+						<p:column style="width:32px">
+				           <p:rowEditor />
+				       </p:column>
 					</p:dataTable>
+					
+					<p:dialog header="Nuevo Estado" id="dialogEstado" widgetVar="dlgNuevoEstado" modal="true" height="100" resizable="false" responsive="true" dynamic="true" onHide="PF('dlgNuevoEstado').content.empty()">						    					
+    					<h:panelGrid columns="2" cellpadding="5">
+				            <h:outputLabel for="estadoDescripcion" value="Descripcion:" />
+				            <p:inputText id="estadoDescripcion" value="#{adminView.ticketEstado.descripcion}" required="true" label="Descripcion" />				 				            
+				 
+				            <f:facet name="footer">
+				                <p:commandButton value="Guardar" update="growl dtEstado" actionListener="#{adminView.guardarTicketEstado}"
+				                                 oncomplete="handleRequest(xhr, status, args, 'dlgNuevoEstado')" />
+				            </f:facet>  
+				        </h:panelGrid>
+					</p:dialog> 
+					
 				</p:tab>
 			</p:tabView>
 

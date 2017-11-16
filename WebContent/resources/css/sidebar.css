@@ -70,9 +70,10 @@
 @media screen and (max-width: 750px) {
 	.openbtn { display: block;}
 	.sidenav .closebtn { display: block;}
-	.sidenav {padding-top: 30px;}
+	.sidenav {padding-top: 50px;}
     .sidenav a {font-size: 18px;}
     #content {font-size: 0.7em;}
+    .sidenav .userinfo { display: none; }	
     	
 }
 
@@ -80,5 +81,6 @@
 	.openbtn { display: none;}
 	.sidenav .closebtn { display: none;}
 	.sidenav { width: 250px !important;}
-	#content { margin-left: 250px !important;}		
+	#content { margin-left: 250px !important;}	
+	.sidenav .userinfo { display: block; }	
 }

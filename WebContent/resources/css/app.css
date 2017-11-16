@@ -1,3 +1,12 @@
+#content {
+	margin-top: 75px !important;
+}
+
 .ui-growl-item-container {
 	top: 80px !important;	
+}
+
+.ui-panelgrid>*>tr,
+.ui-panelgrid .ui-panelgrid-cell {
+    border: none !important;
 }

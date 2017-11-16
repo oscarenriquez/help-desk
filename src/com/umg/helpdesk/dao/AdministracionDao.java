@@ -132,10 +132,153 @@ public class AdministracionDao implements Serializable {
 				}
 			}
 			
+			rs.close();
+			rs = null;
+			
 			return departamentos;
 		} catch (SQLException e) {
 			throw new Exception("Error al insertar entidad ");
 		}		
+	}	
+	
+	public List<Clasificacion> obtenerListaClasificaciones() throws Exception {
+		try {
+			List<Clasificacion> result = new ArrayList<>();
+			Transaction trans = new Transaction();
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT id, descripcion FROM clasificaciones ORDER BY id ");
+
+			ResultSet rs = trans.ExecuteQuery(sql.toString(), null);
+			if (rs != null) {
+				while (rs.next()) {
+					Clasificacion clasificacion = new Clasificacion();
+					clasificacion.setId(rs.getLong("id"));
+					clasificacion.setDescripcion(rs.getString("descripcion"));
+
+					result.add(clasificacion);
+				}
+			}
+
+			rs.close();
+			rs = null;
+			
+			return result;
+		} catch (SQLException e) {
+			throw new Exception("Error al obtener lista clasificaciones ");
+		}
+
+	}
+	
+	public List<Prioridad> obtenerListaPrioridades() throws Exception {
+		try {
+			List<Prioridad> result = new ArrayList<>();
+			Transaction trans = new Transaction();
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT id, descripcion FROM prioridades ORDER BY id ");
+
+			ResultSet rs = trans.ExecuteQuery(sql.toString(), null);
+			if (rs != null) {
+				while (rs.next()) {
+					Prioridad prioridad = new Prioridad();
+					prioridad.setId(rs.getLong("id"));
+					prioridad.setDescripcion(rs.getString("descripcion"));
+
+					result.add(prioridad);
+				}
+			}
+			
+			rs.close();
+			rs = null;
+
+			return result;
+		} catch (SQLException e) {
+			throw new Exception("Error al obtener lista prioridades ");
+		}
+
+	}
+	
+	public List<TipoSolicitud> obtenerListaTipoSolicitudes() throws Exception {
+		try {
+			List<TipoSolicitud> result = new ArrayList<>();
+			Transaction trans = new Transaction();
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT id, descripcion FROM tipos_solicitudes ORDER BY id ");
+
+			ResultSet rs = trans.ExecuteQuery(sql.toString(), null);
+			if (rs != null) {
+				while (rs.next()) {
+					TipoSolicitud tipoSolicitud = new TipoSolicitud();
+					tipoSolicitud.setId(rs.getLong("id"));
+					tipoSolicitud.setDescripcion(rs.getString("descripcion"));
+
+					result.add(tipoSolicitud);
+				}
+			}
+			
+			rs.close();
+			rs = null;
+
+			return result;
+		} catch (SQLException e) {
+			throw new Exception("Error al obtener lista tipos_solicitudes ");
+		}
+
+	}
+	
+	public List<Role> obtenerListaRoles() throws Exception {
+		try {
+			List<Role> result = new ArrayList<>();
+			Transaction trans = new Transaction();
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT id, descripcion FROM roles ORDER BY id ");
+
+			ResultSet rs = trans.ExecuteQuery(sql.toString(), null);
+			if (rs != null) {
+				while (rs.next()) {
+					Role role = new Role();
+					role.setId(rs.getLong("id"));
+					role.setDescripcion(rs.getString("descripcion"));
+
+					result.add(role);
+				}
+			}
+			
+			rs.close();
+			rs = null;
+
+			return result;
+		} catch (SQLException e) {
+			throw new Exception("Error al obtener lista roles ");
+		}
+
+	}
+	
+	public List<TicketEstado> obtenerListaTicketEstados() throws Exception {
+		try {
+			List<TicketEstado> result = new ArrayList<>();
+			Transaction trans = new Transaction();
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT id, descripcion FROM ticket_estados ORDER BY id ");
+
+			ResultSet rs = trans.ExecuteQuery(sql.toString(), null);
+			if (rs != null) {
+				while (rs.next()) {
+					TicketEstado estado = new TicketEstado();
+					estado.setId(rs.getLong("id"));
+					estado.setDescripcion(rs.getString("descripcion"));
+
+					result.add(estado);
+				}
+			}
+
+			rs.close();
+			rs = null;
+			
+			return result;
+		} catch (SQLException e) {
+			throw new Exception("Error al obtener lista ticket_estados ");
+		}
+
 	}
 	
 	public boolean actualizarDepartamento(Departamento departamento) throws Exception {
@@ -151,6 +294,112 @@ public class AdministracionDao implements Serializable {
 			return trans.ExecuteInsertOrUpdate(sql.toString(), params);
 		} catch (SQLException e) {
 			throw new Exception("Error al actualizar entidad ");
+		}
+	}
+	
+	public boolean actualizarClasificacion(Clasificacion clasificacion) throws Exception {
+		try {
+			Transaction trans = new Transaction();
+			StringBuilder sql = new StringBuilder(); 
+			sql.append("UPDATE clasificaciones SET descripcion = ? WHERE id = ? ");
+			
+			Map<Integer, Object> params = new HashMap<>();
+			params.put(1, clasificacion.getDescripcion());
+			params.put(2, clasificacion.getId());
+				
+			return trans.ExecuteInsertOrUpdate(sql.toString(), params);
+		} catch (SQLException e) {
+			throw new Exception("Error al actualizar entidad ");
+		}
+	}
+	
+	public boolean actualizarPrioridad(Prioridad prioridad) throws Exception {
+		try {
+			Transaction trans = new Transaction();
+			StringBuilder sql = new StringBuilder(); 
+			sql.append("UPDATE prioridades SET descripcion = ? WHERE id = ? ");
+			
+			Map<Integer, Object> params = new HashMap<>();
+			params.put(1, prioridad.getDescripcion());
+			params.put(2, prioridad.getId());
+				
+			return trans.ExecuteInsertOrUpdate(sql.toString(), params);
+		} catch (SQLException e) {
+			throw new Exception("Error al actualizar entidad ");
+		}
+	}
+	
+	public boolean actualizarRole(Role role) throws Exception {
+		try {
+			Transaction trans = new Transaction();
+			StringBuilder sql = new StringBuilder(); 
+			sql.append("UPDATE roles SET descripcion = ? WHERE id = ? ");
+			
+			Map<Integer, Object> params = new HashMap<>();
+			params.put(1, role.getDescripcion());
+			params.put(2, role.getId());
+				
+			return trans.ExecuteInsertOrUpdate(sql.toString(), params);
+		} catch (SQLException e) {
+			throw new Exception("Error al actualizar entidad ");
+		}
+	}
+	
+	public boolean actualizarTicketEstado(TicketEstado estado) throws Exception {
+		try {
+			Transaction trans = new Transaction();
+			StringBuilder sql = new StringBuilder(); 
+			sql.append("UPDATE ticket_estados SET descripcion = ? WHERE id = ? ");
+			
+			Map<Integer, Object> params = new HashMap<>();
+			params.put(1, estado.getDescripcion());
+			params.put(2, estado.getId());
+				
+			return trans.ExecuteInsertOrUpdate(sql.toString(), params);
+		} catch (SQLException e) {
+			throw new Exception("Error al actualizar entidad ");
+		}
+	}
+	
+	public boolean actualizarTipoSolicitud(TipoSolicitud tipoSolicitud) throws Exception {
+		try {
+			Transaction trans = new Transaction();
+			StringBuilder sql = new StringBuilder(); 
+			sql.append("UPDATE tipos_solicitudes SET descripcion = ? WHERE id = ? ");
+			
+			Map<Integer, Object> params = new HashMap<>();
+			params.put(1, tipoSolicitud.getDescripcion());
+			params.put(2, tipoSolicitud.getId());
+				
+			return trans.ExecuteInsertOrUpdate(sql.toString(), params);
+		} catch (SQLException e) {
+			throw new Exception("Error al actualizar entidad ");
+		}
+	}
+	
+	public Long obtenerTicketEstadoId(String descripcion) throws Exception {
+		try {
+			Long estadoId = 0l;
+			Transaction trans = new Transaction();
+			StringBuilder sql = new StringBuilder(); 
+			sql.append("SELECT id FROM ticket_estados WHERE ucase(descripcion) = ucase(?) ");
+			
+			Map<Integer, Object> params = new HashMap<>();
+			params.put(1, descripcion);
+				
+			ResultSet rs = trans.ExecuteQuery(sql.toString(), params);
+			if(rs != null) {
+				if(rs.next()) {
+					estadoId = rs.getLong(1);
+				}
+			}
+			
+			rs.close();
+			rs = null;
+			
+			return estadoId;						
+		} catch (SQLException e) {
+			throw new Exception("Error al Obtener estado id por descripcion ");
 		}
 	}
 }

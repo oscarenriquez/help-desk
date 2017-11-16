@@ -6,12 +6,16 @@
 	xmlns:f="http://java.sun.com/jsf/core">
 <h:body>
 	<ui:composition>
-		<nav class="navbar navbar-dark bg-primary navbar-expand-lg sticky-top">
-			<span class="navbar-brand mb-0 h1"> Help Desk <p:graphicImage
+		<nav class="navbar navbar-dark bg-primary navbar-expand-lg fixed-top">
+			<span class="navbar-brand mb-0 h1"> 
+					<p:link href="home.jsf" style="text-decoration: none; color: white;">
+					Help Desk <p:graphicImage
 					name="images/LogoUMG.png" />
+					</p:link>
 			</span>
 			<ul class="navbar-nav" style="position: absolute; right: 0;">
 				<li class="nav-item"><p:commandButton
+						ajax="false"
 						icon="fa fa-fw fa-power-off fa-md"
 						action="#{userLoginView.logout}" value="Salir" /></li>
 			</ul>
