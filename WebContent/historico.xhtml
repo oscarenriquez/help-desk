@@ -5,27 +5,101 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://java.sun.com/jsf/core">
 <h:body>
-	<ui:composition>
+	<ui:composition id="compos">	
 		
 			<h3>Historico</h3>
-			<p:dataTable var="ticket" value="#{ticketView.tickets}" reflow="true" rows="10" paginator="true">
+			<p:dataTable id="dtTicket" var="ticket" value="#{ticketView.tickets}" reflow="true" rows="10" paginator="true" selectionMode="single" selection="#{ticketView.selectedTicket}" rowKey="#{ticket.id}">
 				<p:column headerText="Id">
 					<h:outputText value="#{ticket.id}" />
-				</p:column>
-
-				<p:column headerText="Anio">
-					<h:outputText value="#{ticket.anio}" />
-				</p:column>
+				</p:column>	
 
 				<p:column headerText="Asunto">
 					<h:outputText value="#{ticket.asunto}" />
+				</p:column>
+				
+				<p:column headerText="Clasificacion">				
+					<h:outputText value="#{ticket.clasificacion}" />
+				</p:column>
+				
+				<p:column headerText="Prioridad">				
+					<h:outputText value="#{ticket.prioridad}" />
+				</p:column>
+				
+				<p:column headerText="Estado">				
+					<h:outputText value="#{ticket.estado}" />
 				</p:column>
 
 				<p:column headerText="Fecha Creacion">
 					<h:outputText value="#{ticket.fechaCreacion}" />
 				</p:column>
-			</p:dataTable>		
+				
+				<f:facet name="footer">
+		            <p:commandButton process="dtTicket" update="form:ticketDetail" actionListener="#{ticketView.obtenerDetalles}" icon="ui-icon-search" value="Ver" oncomplete="PF('ticketDialog').show()" />
+		        </f:facet>
+			</p:dataTable>
+			
+			<p:contextMenu for="dtTicket">
+		        <p:menuitem value="Editar" update="form:ticketComment" icon="ui-icon-edit" oncomplete="PF('ticketEditarDialog').show()"/>
+		        <p:menuitem value="Resolver" update="form:growl" icon="ui-icon-close" actionListener="#{ticketView.resolver}" oncomplete="window.location='home.jsf'"/>
+		    </p:contextMenu>
+		    
+		    <p:dialog id="ticketComment" rendered="#{not empty ticketView.selectedTicket}"  header="Ticket #{ticketView.selectedTicket.id}" widgetVar="ticketEditarDialog" modal="true" resizable="false" draggable="false" minWidth="300" width="90%" dynamic="true" onHide="PF('ticketEditarDialog').content.empty()">
+		    	<p:panel header="Visor" styleClass="ui-shadow" widgetVar="panel" style="margin-bottom:20px">							
+					<div class="ui-fluid">																						
+						<p:panel header="Agregar Paso" styleClass="ui-shadow" style="margin-bottom:10px">
+				        	<p:panelGrid columns="1" cellpadding="5" style="width: 97%;">															
+								<p:editor widgetVar="editor" id="editor" controls="bold italic underline strikethrough font size" value="#{ticketView.ticketDetalle.comentario}" height="100">														        
+						        </p:editor >			    
+							</p:panelGrid>	
+				        </p:panel>		
+				        
+				        <f:facet name="footer">
+				        	<p:commandButton rendered="#{ticketView.selectedTicket.estadoId ne 2}" actionListener="#{ticketView.editar}" update="form:growl" icon="fa fa-save" value="Guardar" oncomplete="PF('ticketEditarDialog').hide();" />
+				        </f:facet>												
+					</div>														        				        				       				       				        				       
+				</p:panel>		    </p:dialog>
 
+			<p:dialog id="ticketDetail" rendered="#{not empty ticketView.selectedTicket}" header="Ticket #{ticketView.selectedTicket.id}" widgetVar="ticketDialog" modal="true" resizable="false" draggable="false" minWidth="300" width="90%"  dynamic="true" onHide="PF('ticketDialog').content.empty()">
+				
+				<p:outputPanel style="overflow: auto;">
+					<p:scrollPanel style="width:100%;height:400px">
+						<p:panel header="Visor" styleClass="ui-shadow" widgetVar="panel" style="margin-bottom:20px">							
+							<div class="ui-fluid">			
+								<p:panelGrid columns="4" layout="grid" cellpadding="5" style="width: 100%;"  >
+									<h:outputText style="font-weight: bold; float: right;" value="Asunto:"/>								
+									<h:outputText value="#{ticketView.selectedTicket.asunto}"/>	
+									
+									<h:outputText style="font-weight: bold; float: right;" value="Tipo Solicitud: "/>								
+									<h:outputText value="#{ticketView.selectedTicket.tipoSolicitud}"/>
+									
+									<h:outputText style="font-weight: bold; float: right;" value="Clasificacion:"/>								
+									<h:outputText value="#{ticketView.selectedTicket.clasificacion}"/>	
+									
+									<h:outputText style="font-weight: bold; float: right;" value="Prioridad: "/>								
+									<h:outputText value="#{ticketView.selectedTicket.prioridad}"/>													        			      
+								</p:panelGrid>	
+								
+								<p:repeat value="#{ticketView.ticketDetalles}" var="detalle">
+							        <p:panel header="Editado: #{detalle.accion}" styleClass="ui-shadow" style="margin-bottom:0px;">							            
+							            <p:outputPanel>
+							                <p:panelGrid columns="1" cellpadding="5" style="width: 97%;">															
+												<h:inputTextarea readonly="true" disabled="true" value="#{detalle.comentario}" height="75" style="width:100%; border-radius: 5px; background-color:white; padding: 5px;"></h:inputTextarea>		    
+											</p:panelGrid>
+							            </p:outputPanel>
+							        </p:panel>							        
+							    </p:repeat>
+															
+								<p:panel header="Fecha Creacion: #{ticketView.selectedTicket.fechaCreacion}" styleClass="ui-shadow" style="margin-bottom:10px">
+						        	<p:panelGrid columns="1" cellpadding="5" style="width: 97%;">																									
+								        <h:inputTextarea readonly="true" disabled="true" value="#{ticketView.selectedTicket.inconveniente}" height="75" style="width:100%; border-radius: 5px; background-color:white; padding: 5px;"></h:inputTextarea>			    
+									</p:panelGrid>	
+						        </p:panel>														
+								</div>														        				        				       				       				        				       
+						</p:panel>
+					</p:scrollPanel>		
+				</p:outputPanel>
+			
+			</p:dialog>	
 	</ui:composition>
 </h:body>
 </html>

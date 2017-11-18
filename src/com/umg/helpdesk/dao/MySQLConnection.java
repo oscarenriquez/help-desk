@@ -4,10 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import javax.sql.DataSource;
-
 import com.umg.helpdesk.helper.ConstantHelper;
-import com.umg.helpdesk.service.ServiceLocator;
 
 public class MySQLConnection {
 
@@ -23,14 +20,15 @@ public class MySQLConnection {
 	}
 
 	private Connection connection = null;
-
+	
 	public Connection connect() {
 		try {
 			if (connection == null) {
 				Class.forName(ConstantHelper.DRIVER);
-				String url = "jdbc:mysql://" + ConstantHelper.SERVER + ":" + ConstantHelper.PORT + "/"
+				// String de conexion jdbc:mysql://localhost:3306/helpdesk
+				String stringConexion = "jdbc:mysql://" + ConstantHelper.SERVER + ":" + ConstantHelper.PORT + "/"
 						+ ConstantHelper.SID;
-				connection = DriverManager.getConnection(url, ConstantHelper.USER, ConstantHelper.PASSWORD);
+				connection = DriverManager.getConnection(stringConexion, ConstantHelper.USER, ConstantHelper.PASSWORD);
 			}
 
 		} catch (ClassNotFoundException e) {
@@ -60,7 +58,7 @@ public class MySQLConnection {
 		}
 	}
 
-	public Connection connectDS() {
+	/*public Connection connectDS() {
 		ServiceLocator serviceLocator;
 		DataSource ds;
 		try {
@@ -76,5 +74,5 @@ public class MySQLConnection {
 			connection = null;
 		}
 		return connection;
-	}
+	}*/
 }

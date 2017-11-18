@@ -18,7 +18,7 @@ public class Transaction {
 			MySQLConnection conn = MySQLConnection.getInstance();
 			connection = conn.connect();
 			connection.setAutoCommit(false);
-			statement = connection.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			statement = connection.prepareStatement(sql);
 
 			
 			if (params != null && params.size() > 0) {
@@ -30,6 +30,8 @@ public class Transaction {
 						statement.setString(key, value.toString());
 					} else if (value instanceof Integer) {
 						statement.setInt(key, (Integer) value);
+					} else if (value instanceof Short) {
+						statement.setShort(key, (Short) value);
 					} else if (value instanceof Long) {
 						statement.setLong(key, (Long) value);
 					} else if (value instanceof Double) {
@@ -40,7 +42,7 @@ public class Transaction {
 				}
 			}
 			
-			resultSet = statement.executeQuery();	
+			resultSet = statement.executeQuery();					
 			
 			result.populate(resultSet);
 
@@ -98,7 +100,7 @@ public class Transaction {
 					} else if (value instanceof Double) {
 						statement.setDouble(key, (Double) value);
 					} else if (value instanceof Date) {
-						statement.setDate(key, new java.sql.Date(((Date) value).getTime()));
+						statement.setTimestamp(key,new Timestamp(((Date) value).getTime()));
 					} else {
 						new RuntimeException("Unsupported data type on Transaction.ExecuteInsertOrUpdate");
 					}

@@ -63,5 +63,5 @@ public class TicketDetalle implements Serializable {
 	public void setUsuarioAccionId(String usuarioAccionId) {
 		this.usuarioAccionId = usuarioAccionId;
 	}
-		
+	
 }

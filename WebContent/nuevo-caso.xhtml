@@ -32,7 +32,10 @@
 				        <p:outputLabel for="tipoSolicitud" value="Tipo Solicitud:" />					
 						<p:selectOneMenu id="tipoSolicitud" value="#{nuevoCasoView.ticket.tipoSolicitudId}">
 				            <f:selectItems value="#{nuevoCasoView.solicitudes}" var="sl" itemValue="#{sl.id}" itemDescription="#{sl.descripcion}" itemLabel="#{sl.descripcion}"></f:selectItems>
-				        </p:selectOneMenu>			        			        
+				        </p:selectOneMenu>	
+				        
+				        <p:outputLabel for="button" value="Button:" />
+        				<p:calendar id="button" value="#{nuevoCasoView.ticket.fechaEstimacion}" showOn="button" />		        			        
 					</p:panelGrid>
 					
 					<p:panelGrid columns="1" cellpadding="5" style="width: 100%;">
